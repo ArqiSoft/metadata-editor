@@ -1,0 +1,9 @@
+<span class="node" [ngClass]="{selected:selected}">
+  <span class="node-name">{{name}}</span>
+  <button *ngIf="addExists" (click)="add.emit()" class="btn btn-secondary btn-sm">
+    <i class="fa fa-plus"></i>
+  </button>
+  <button *ngIf="removeExists" (click)="remove.emit()" class="btn btn-danger btn-sm">
+    <i class="fa fa-remove"></i>
+  </button>
+</span>

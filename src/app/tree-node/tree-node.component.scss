@@ -1,0 +1,41 @@
+.btn-sm {
+  padding: 0 .2rem;
+  border-radius: 1rem;
+  opacity: 0;
+}
+
+.fa {
+  margin-top: 1px;
+}
+
+span.node {
+  transition: all .2s;
+  cursor: pointer;
+  padding: 0 5px 5px;
+  border-radius: 5px;
+
+  &:hover {
+    background: aliceblue;
+  }
+  &:hover > .btn {
+    opacity: 1;
+  }
+}
+
+.node.selected {
+  //position: sticky;
+  //top: 0;
+  //z-index: 1;
+}
+
+.node.selected .node-name {
+  padding: 1px 5px 5px;
+  background: teal;
+  border-radius: 5px;
+  color: white;
+}
+
+.node.selected:hover .node-name {
+  background: darkslategray;
+
+}

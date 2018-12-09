@@ -1,0 +1,180 @@
+<router-outlet>
+</router-outlet>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <fm-tree [data]="data"></fm-tree>
+    </div>
+    <!--<div class="col">-->
+    <!--<h5>SECTIONS</h5>-->
+    <!--<ul class="list-group">-->
+    <!--<li *ngFor="let section of meta.sections"-->
+    <!--[ngClass]="{active:section.id==currentSection.id}"-->
+    <!--class="list-group-item justify-content-between"-->
+    <!--(click)="currentSection=section">-->
+    <!--{{section.title}}-->
+    <!--<span class="badge badge-default badge-pill">{{section.screens.length}}</span>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--<p></p>-->
+    <!--<button (click)="addSection()" class="btn btn-secondary btn-sm">Add section</button>-->
+    <!--</div>-->
+
+    <!--<div *ngIf="currentSection" class="col">-->
+    <!--<h5>SCREENS</h5>-->
+    <!--<ul class="list-group">-->
+    <!--<li *ngFor="let screen of currentSection.screens"-->
+    <!--[ngClass]="{active:screen.id==currentScreen.id}"-->
+    <!--class="list-group-item justify-content-between"-->
+    <!--(click)="currentScreen=screen">-->
+    <!--{{screen.title}}-->
+    <!--<span class="badge badge-default badge-pill">{{screen.screenParts.length}}</span>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--<p></p>-->
+    <!--<button (click)="addScreen()" class="btn btn-secondary btn-sm">Add screen</button>-->
+    <!--</div>-->
+
+    <!--<div *ngIf="currentSection && currentScreen" class="col">-->
+    <!--<h5>SCREEN PARTS</h5>-->
+    <!--<ul class="list-group">-->
+    <!--<li *ngFor="let screenPart of currentScreen.screenParts"-->
+    <!--[ngClass]="{active:screenPart.id==currentScreenPart.id}"-->
+    <!--class="list-group-item justify-content-between"-->
+    <!--(click)="currentScreenPart=screenPart">-->
+    <!--{{screenPart.title}}-->
+    <!--&lt;!&ndash;<span class="badge badge-default badge-pill">{{screen.screenParts.length}}</span>&ndash;&gt;-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--<p></p>-->
+    <!--<button (click)="addScreenPart()" class="btn btn-secondary btn-sm">Add screen part</button>-->
+    <!--</div>-->
+
+    <div class="col-8">
+      <form>
+        <h5>MAIN
+          | <a href="#" id="download" (click)="download()">Download</a>
+          <input type="file" id="file-input"/></h5>
+        <div class="form-group">
+          <input [(ngModel)]="data.meta.title" name="data.meta.title" placeholder="Title" class="form-control">
+        </div>
+        <div *ngIf="data.currentSection">
+          <h5>SECTION
+          </h5>
+          <div class="form-group">
+            <input [(ngModel)]="data.currentSection.title" name="data.currentSection.title" placeholder="Title"
+                   class="form-control">
+          </div>
+          <div class="form-group">
+            <input [(ngModel)]="data.currentSection.responseKey" name="data.currentSection.responseKey"
+                   (focus)="setResponseKey(data.currentSection)"
+                   placeholder="Response key"
+                   class="form-control">
+          </div>
+          <div *ngIf="data.currentScreen">
+            <h5>SCREEN
+            </h5>
+            <div class="form-group">
+              <input [(ngModel)]="data.currentScreen.title" name="data.currentScreen.title" placeholder="Title"
+                     class="form-control">
+            </div>
+            <div class="form-group">
+              <select [(ngModel)]="data.currentScreen.screenType" name="data.currentScreen.screenType"
+                      class="form-control">
+                <option *ngFor="let item of screenTypes" [ngValue]="item">{{item}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input [(ngModel)]="data.currentScreen.responseKey" name="data.currentScreen.responseKey"
+                     (focus)="setResponseKey(data.currentScreen)"
+                     placeholder="Response key"
+                     class="form-control">
+            </div>
+          </div>
+          <div *ngIf="data.currentScreenPart">
+            <h5>SCREEN PART
+            </h5>
+            <div class="form-group">
+              <input [(ngModel)]="data.currentScreenPart.title" name="data.currentScreenPart.title" placeholder="Title"
+                     class="form-control">
+            </div>
+            <div class="form-group">
+              <textarea [(ngModel)]="data.currentScreenPart.instructions" name="data.currentScreenPart.instructions"
+                        placeholder="Instructions"
+                        class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+              <select [(ngModel)]="data.currentScreenPart.responseType"
+                      (ngModelChange)="responseTypeChanged(data.currentScreenPart)"
+                      name="data.currentScreenPart.responseType"
+                      class="form-control">
+                <option *ngFor="let item of responseTypes" [ngValue]="item">{{item}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <select [(ngModel)]="data.currentScreenPart.dataType" name="data.currentScreenPart.dataType"
+                      class="form-control">
+                <option *ngFor="let item of dataTypes" [ngValue]="item">{{item}}</option>
+              </select>
+            </div>
+
+
+            <div *ngIf="data.currentScreenPart.responseType==='single-response'" class="form-group form-inline">
+              <input [(ngModel)]="data.currentScreenPart._lastResponseOptionName"
+                     name="data.currentScreenPart.responseOptions"
+                     placeholder="Response options" class="form-control">
+              <button *ngIf="data.currentScreenPart._lastResponseOptionName"
+                      (click)="addResponseOption(data.currentScreenPart,data.currentScreenPart._lastResponseOptionName)"
+                      class="btn btn-secondary">
+                <i class="fa fa-plus"></i></button>
+              <span *ngFor="let option of data.currentScreenPart.responseOptions" class="ml-2">
+                {{option}}
+                <button (click)="removeResponseOption(data.currentScreenPart, option)" class="btn btn-danger btn-sm"><i
+                  class="fa fa-remove"></i></button>
+              </span>
+            </div>
+            <div class="form-group">
+              <input [(ngModel)]="data.currentScreenPart.responseKey"
+                     (focus)="setResponseKey(data.currentScreenPart)"
+                     name="data.currentScreenPart.responseKey"
+                     placeholder="Response Key"
+                     class="form-control">
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+              <span class="input-group-btn">
+                <button
+                  (click)="setResponseTarget(data.currentScreenPart, true)"
+                  class="btn btn-secondary" type="button">Reset</button>
+              </span>
+                <input [(ngModel)]="data.currentScreenPart.responseTarget"
+                       (focus)="setResponseTarget(data.currentScreenPart)"
+                       name="data.currentScreenPart.responseTarget"
+                       placeholder="Response Target"
+                       class="form-control">
+              </div>
+            </div>
+            <h5>VALIDATION</h5>
+            <div class="form-group">
+              <input type="checkbox" [(ngModel)]="data.currentScreenPart.validation.mandatory"
+                     name="data.currentScreenPart.validation.mandatory"
+                     id="data.currentScreenPart.validation.mandatory">
+              <label for="data.currentScreenPart.validation.mandatory">Mandatory</label>
+            </div>
+            <div class="form-group">
+              <input type="number" [(ngModel)]="data.currentScreenPart.validation.minLength"
+                     name="data.currentScreenPart.validation.minLength" placeholder="Min length"
+                     class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="number" [(ngModel)]="data.currentScreenPart.validation.maxLength"
+                     name="data.currentScreenPart.validation.maxLength" placeholder="Max length"
+                     class="form-control">
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

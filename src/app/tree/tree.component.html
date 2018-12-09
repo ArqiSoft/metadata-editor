@@ -1,0 +1,34 @@
+<div>
+  <br>
+  <h5>
+    <fm-tree-node name="{{data.meta.title | truncate:15}} [main]"
+                  selected="true"
+                  (add)="addSection(data.meta)"></fm-tree-node>
+  </h5>
+  <ul class="tree">
+    <li *ngFor="let section of data.meta.sections">
+      <fm-tree-node name="{{section.title | truncate:15}} [section]"
+                    [selected]="data.currentSection?.id==section.id"
+                    (click)="selectSection(section)"
+                    (add)="addScreen(section)"
+                    (remove)="removeSection(section)"></fm-tree-node>
+      <ul>
+        <li *ngFor="let screen of section.screens">
+          <fm-tree-node name="{{screen.title | truncate:15}} [screen]"
+                        [selected]="data.currentScreen?.id==screen.id"
+                        (click)="selectScreen(screen)"
+                        (add)="addScreenPart(screen)"
+                        (remove)="removeScreen(screen)"></fm-tree-node>
+          <ul>
+            <li *ngFor="let screenPart of screen.screenParts">
+              <fm-tree-node name="{{screenPart.title | truncate:15}} [part]"
+                            [selected]="data.currentScreenPart?.id==screenPart.id"
+                            (click)="selectScreenPart(screenPart)"
+                            (remove)="removeScreenPart(screenPart)"></fm-tree-node>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
